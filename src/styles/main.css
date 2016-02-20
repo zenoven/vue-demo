@@ -1,0 +1,25 @@
+.box {
+    border: 1px solid #ccc;
+    background: #eee;
+    padding: 10px;
+    margin: 20px;
+}
+.title {
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 20px;;
+
+}
+.demoTran-transition {
+    transition: all .3s ease;
+    overflow: hidden;
+    border: 1px solid red;
+    /*background: blue;*/
+    width:200px;
+}
+.demoTran-enter {
+    width: 400px;
+}
+.demoTran-leave {
+    width: 300px;
+}

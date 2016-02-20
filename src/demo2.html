@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo2</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<div id="main">
+    <aaa></aaa>
+    <div class="box">sdfasdf</div>
+</div>
+<zen-element-directive><div class="box">element directive</div></zen-element-directive>
+
+
+<script src="js/vue.js"></script>
+<script>
+    Vue.config.debug = true;
+
+    Vue.directive('alert', {
+        bind: function(){
+            console.log('initial bind triggered!');
+        },
+        update: function(newVal, oldVal){
+            console.log('update triggered with new Value: ' + newVal + ', old Value: ' + oldVal);
+            console.log(this);
+            var str =
+                    'name: ' + this.name + '\r\n' +
+                    'arg: ' + this.arg + '\r\n' +
+                    'expression: ' + this.expression + '\r\n' +
+                    'modifiers: ' + JSON.stringify(this.modifiers) + '\r\n' +
+                    'descriptor: ' + JSON.stringify(this.descriptor) + '\r\n'  +
+                    'value: ' + newVal
+//            this.el.innerHTML = str; // bugs here
+            console.log(str);
+        },
+        unbind: function(){
+            console.log('unbind triggered!');
+        }
+    });
+
+    Vue.component('aaa', {
+        template: '<div class="a box" v-alert:content.transform.empty="msg"><h3 class="title">directive demo</h3></div>',
+        data: function () {
+            return {
+                msg: "I'm message"
+            }
+        }
+    });
+
+    var vm = new Vue({
+        el: '#main'
+    });
+
+    Vue.elementDirective('zen-element-directive', {
+        bind: function () {
+            console.log(this);
+//            alert(111)
+        },
+
+        update: function(){
+            console.log('sss');// can not run
+        }
+    });
+
+
+
+</script>
+</body>
+</html>

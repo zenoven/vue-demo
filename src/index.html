@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+    <div id="main">
+        <div class="box">
+            <h3 class="title">basic demo</h3>
+            {{msg}}
+            <button v-on:click="reverseTxt">Reverse Text</button>
+            <button v-on:click="getItemsCount">Get Count</button>
+        </div>
+        <div class="box">
+            <h3 class="title">list basic</h3>
+            <ul>
+                <li v-for="item in list">
+                    {{item.name}} is {{item.score}}
+                </li>
+            </ul>
+        </div>
+
+        <div class="box">
+            <h3 class="title">list 2</h3>
+            <ul>
+                <li v-for="item in items">
+                    {{item.text}} <span class="remove" v-on:click="removeItem($index)">X</span>
+                </li>
+            </ul>
+            <input type="text" v-model="newItem">
+            <button v-on:click="addNew">Add New item</button>
+        </div>
+
+        <div class="box">
+            <h3 class="title">singleTimeData</h3>
+            <div>singleTimeData: {{* singleTimeData}}</div>
+            <button v-on:click="changeSingleTimeData">Change singleTimeData</button>
+        </div>
+
+        <div class="box">
+            <h3 class="title">raw html</h3>
+            {{{ html }}}
+        </div>
+
+        <div class="box">
+            <h3 class="title">computed </h3>
+            {{d }}
+        </div>
+
+        <div class="box">
+            <h3 class="title">v-bind shortcut</h3>
+            <button :class="msg">Class name should eq {{msg}}</button>
+        </div>
+
+        <div class="box">
+            <h3 class="title">v-on shortcut </h3>
+            <button @click="clickMe">Click to trigger</button>
+        </div>
+
+        <div class="box">
+            <h3 class="title">computed fullName </h3>
+            <span>{{fullName}}</span>
+            <button @click="changeFullName">changeFullName</button>
+        </div>
+
+        <div class="box">
+            <h3 class="title">class and style</h3>
+            <div :class="classObj">classObj</div>
+            <div :class="classArr">classArr</div>
+            <div :style="styleObj">styleObj</div>
+            <div :style="styleArr">styleArr</div>
+        </div>
+
+        <div class="box">
+            <h3 class="title">v-if</h3>
+            <template v-if="showIfContent">
+                v-if content
+            </template>
+            <template v-else>
+                v-else content
+            </template>
+        </div>
+
+        <div class="box">
+            <h3 class="title">v-show</h3>
+            <div v-show="showShowContent">
+                v-show content
+            </div>
+            <div v-else>
+                v-else content
+            </div>
+        </div>
+
+        <div class="box">
+            <h3 class="title">v-for basic</h3>
+            <div>ddd will be pushed after 2s</div>
+            <div>array will be reversed after 4s</div>
+            <template v-for="(index, item) in vForAarray">
+                <li>{{index}}-{{item}}</li>
+            </template>
+        </div>
+
+        <div class="box">
+            <h3 class="title">v-for key value</h3>
+            <li v-for="(key, val) in vForObj">
+                {{key}}: {{val}}
+            </li>
+        </div>
+
+        <div class="box">
+            <h3 class="title">v-on with params</h3>
+            <a @click.prevent="say('sss', $event)" href="#">say</a>
+            <a @click.prevent="greet" href="#">greet</a>
+            <input @keyup.left="greet" />
+        </div>
+
+        <div class="box">
+            <h3 class="title">json filter test</h3>
+            {{vForAarray | json}}
+        </div>
+
+        <div class="box">
+            <h3 class="title">checkbox demo</h3>
+            <label><input type="checkbox" value="aaa" v-model="checkboxArray"></label>
+            <label><input type="checkbox" value="bbb" v-model="checkboxArray"></label>
+            <label><input type="checkbox" value="ccc" v-model="checkboxArray"></label>
+            <span>checkbox result: {{checkboxArray | json}}</span>
+        </div>
+
+        <div class="box">
+            <h3 class="title">checkbox with bind</h3>
+            <label><input type="checkbox" v-model="checkboxValue" :true-value="checked"  :false-value="unchecked"></label>
+            <span>result:{{checkboxValue}}, {{checked}}, {{unchecked}}, is eq checked: {{checkboxValue===checked}}, is eq unchecked: {{checkboxValue===unchecked}}</span>
+        </div>
+
+        <div class="box">
+            <h3 class="title">select</h3>
+            <select v-model="selectValue">
+                <option value="111">AAA</option>
+                <option value="222">BBB</option>
+            </select>
+            <div>{{selectValue}}</div>
+        </div>
+
+        <div class="box">
+            <h3 class="title">select with obj value</h3>
+            <select v-model="selectValuePro" lazy>
+                <option :value="111">AAA</option>
+                <option :value="{name: 'Jason'}">BBB</option>
+            </select>
+            <div>type: {{typeof selectValuePro}}</div>
+            <div>value: {{selectValuePro|json}}</div>
+        </div>
+
+        <div class="box">
+            <h3 class="title">number with debounce</h3>
+            <input type="text" v-model="age" number debounce="400">
+            <div>{{age}}</div>
+        </div>
+
+        <div class="box">
+            <h3 class="title">transition</h3>
+            <button @click="setAutoTransition">Trigger automatically transition(run after 4s automatically)</button>
+            <br>
+            <button @click="setTransition">Toggle transition manually</button>
+            <div v-if="showTransition" transition="demoTran">
+                transition content box
+            </div>
+        </div>
+
+
+    </div>
+
+    <div id="zen">
+        <zen-com></zen-com>
+
+        <div class="box">
+            <h3 class="title">partial component</h3>
+
+            <p-com></p-com>
+            <parent-com-bind></parent-com-bind>
+            <validation></validation>
+        </div>
+    </div>
+
+    <div id="eventDispatch">
+        <parent-box></parent-box>
+    </div>
+
+    <div id="ss">
+        <div class="box">
+            <h3 class="title">component ref</h3>
+            <child-box v-ref:pro></child-box>
+            <div>{{child | json}}</div>
+            <slot-child>
+                <p slot="a">slot a content</p>
+                <p slot="b">slot b content</p>
+                <p slot="b">another slot b content</p>
+                <div class="sss">default content</div>
+            </slot-child>
+        </div>
+    </div>
+
+
+    <div id="dynamic">
+        <div class="box">
+            <h3 class="title">dynamic component</h3>
+            <component :is="currentTab" keep-alive v-ref:tab ></component>
+            <button @click="changeTab">changeTab</button>
+        </div>
+    </div>
+
+
+    <div id="recursive">
+        <recursive></recursive>
+    </div>
+<script src="js/vue.js"></script>
+<script>
+    Vue.config.debug = true;
+
+
+
+    var vm = new Vue({
+        el: "#main",
+        data: {
+            msg: "test",
+            list: [
+                {name: "Zen Oven", score: 20},
+                {name: "John", score: 25},
+                {name: "Matt", score: 30}
+            ],
+            firstName: 'Zen',
+            lastName: 'Oven',
+            items: null,
+            singleTimeData: 100,
+            html: "<span style='color:red;' >span content</span>",
+            classObj: {
+                aaa: true,
+                bbb: false
+            },
+            classArr: [
+                'ccc',
+                'ddd'
+            ],
+            styleObj: {
+                fontSize: '20px',
+                color: 'red'
+            },
+            styleArr: [
+                {
+                    fontSize: '20px',
+                    color: 'red'
+                },
+                {
+                    fontSize: '18px',
+                    color: 'blue'
+                }
+            ],
+            showIfContent: false,
+            showShowContent: false,
+            vForAarray: [
+                    "aaa",
+                    "bbb",
+                    "ccc"
+            ],
+            vForObj: {
+                name: 'AAA',
+                age: 18,
+                sex: 'Male'
+            },
+            checkboxArray: [],
+            checkboxValue: 'aaa',
+            checked: true,
+            unchecked: false,
+            selectValue: null,
+            selectValuePro: null,
+            age: null,
+            showTransition: null
+        },
+        methods: {
+            reverseTxt: function () {
+                this.msg = this.msg.split('').reverse().join('')
+            },
+            getItemsCount: function() {
+                this.msg = this.list.length;
+            },
+            addNew: function() {
+                var text = this.newItem.trim();
+                if(!text) {
+                    return;
+                }
+                if (!this.items) {
+                    this.items = [];
+                }
+                this.items.push({text: text});
+                this.newItem = null;
+                console.log(this.items);
+            },
+            removeItem: function(index) {
+                this.items.splice(index, 1);
+            },
+            changeSingleTimeData: function(){
+                this.singleTimeData += 300;
+            },
+            clickMe: function() {
+                alert(this);
+            },
+            changeFullName: function() {
+                this.fullName = 'New Name';
+            },
+            say: function (msg, event) {
+                alert(msg);
+                console.log(event);
+            },
+            greet: function (event) {
+                console.log(event);
+            },
+            setTransition: function() {
+                this.showTransition = !!!this.showTransition;
+            },
+            setAutoTransition: triggerAutomaticallyTransition
+        },
+        created: function(){
+            this.singleTimeData = 200;
+        },
+        computed: {
+            d: function () {
+                return this.msg + '/sss';
+            },
+            fullName: {
+                get: function () {
+                    return this.firstName + ' ' + this.lastName;
+                },
+                set: function (newName) {
+                    var names = newName.split(' ');
+                    this.firstName = names[0];
+                    this.lastName = names[names.length-1];
+                }
+            }
+        }
+    });
+    setTimeout(function () {
+        vm.vForAarray.push('ddd');
+    },2000);
+
+    function triggerAutomaticallyTransition(){
+        setTimeout(function () {
+            vm.vForAarray.reverse();
+            vm.showTransition = true;
+            console.log(vm.showTransition);
+        },4000);
+
+        setTimeout(function () {
+            vm.showTransition = false;
+            console.log(vm.showTransition);
+        },6000);
+    }
+
+    Vue.transition('demoTran',{
+        beforeEnter: function(el){
+            console.log('before enter triggered');
+        },
+        enter: function(el, done){
+            console.log('enter triggered');
+
+            setTimeout(function () {
+                console.log('setTimeout begin');
+//                done();
+                console.log('setTimeout after');
+            },200);
+        }
+    });
+
+
+    //    custom component
+    var ZenComponent = Vue.extend({
+        template: '<div class="box"><h3 class="title">zen component title</h3><div>'
+    });
+    Vue.component('zen-com', ZenComponent);
+
+//  普通注册方式
+    //    var ChildCom = Vue.extend({
+    //        template: '<h3 class="title">child component title</h3>'
+    //    });
+    //    var ParentCom = Vue.extend({
+    //        template: '<div class="box"><h3 class="title">parent component title</h3><child-com></child-com></div>',
+    //        components: {
+    //            'child-com': ChildCom
+    //        }
+    //    });
+    //    Vue.component('p-com', ParentCom);
+
+//    注册语法糖方式
+    Vue.component('p-com', {
+        template: '<div class="box"><h3 class="title"><input type="text" v-model="dataParent"">parent component title</h3><child-com v-if="showChildContent" data-text="{{dataParent}}"></child-com></div>',
+        components: {
+            'child-com': {
+                props: ['data-text'],
+                template: '<h3 class="title">child component title <button>child inner content</button><span>{{dataText}}</span></h3>'
+            }
+        },
+        data: function () {
+            return {
+                showChildContent: true,
+                dataParent: 'aaa'
+            }
+        }
+    });
+
+    Vue.component('prop', {
+        template: '<div class="box">' +
+        '<h3 class="title" >prop| parent title</h3><prop-child age="18"></prop-child>' +
+                +
+        '</div>',
+        components: {
+            'prop-child': {
+                props: ['age'],
+                template: '<h3 class="title">child component with age: {{age}}</h3>'
+            }
+        }
+    });
+
+    Vue.component('parent-com-bind',{
+        template:
+        '<div class="box">' +
+            '<h3 class="title">components with data bind</h3>' +
+            'double bind<input type="text" v-model="parentDouble">  ' +
+            'single bind<input type="text" v-model="parentSingle">  ' +
+            'bind once<input type="text" v-model="parentOnce">  ' +
+            '<child-com-bind :double.sync="parentDouble" :single="parentSingle" :once.once="parentOnce"></child-com-bind>' +
+        '</div>',
+        components: {
+            'child-com-bind': {
+                props: ['double','single', 'once'],
+                template:
+                        '<h3 class="title">child content</h3>' +
+                        '<ul>' +
+                            'double: <input type="text" v-model="double">' +
+                            'single: <input type="text" v-model="single">' +
+                            'once: <input type="text" v-model="once">' +
+                        '</ul>'
+            }
+        },
+        data: function() {
+            return {
+                parentDouble: 'double',
+                parentSingle: 'single',
+                parentOnce: 'once'
+            }
+        }
+    });
+
+    Vue.component('validation', {
+        template:
+        '<div class="box">' +
+            '<h3 class="title">components with validation</h3>' +
+            'd from parent: <input type="text" v-model="d"> ' +
+            '<validation-child :x="x" :a="a"  :d="d" :e="e" :f="f" :g="g"></validation-child> ' +
+        '</div>',
+        components: {
+            'validation-child':  {
+                props: {
+                    x: null,
+                    a: {
+                        type: Number,
+                        default: 100
+                    },
+                    b: {
+                        type: String,
+                        default: 'bbb'
+                    },
+                    c: {
+                        type: Object,
+                        default: function () {
+                            return {data: 100}
+                        }
+                    },
+                    d: {
+                        twoway: true
+                    },
+                    e: {
+                        validator: function(val){
+                            return val > 100
+                        }
+                    },
+                    f: {
+                        coerce: function(val){
+                            return val.replace('s','');
+                        }
+                    },
+                    g: {
+                        coerce: function(val){
+                            return JSON.stringify(val);
+                        }
+                    }
+                },
+                template:
+                        "<h3 class='title'>child component content</h3>" +
+                        "<ul>" +
+                            "<li>x:{{x}}</li>" +
+                            "<li>a:{{a}}</li>" +
+                            "<li>b:{{b}}</li>" +
+                            "<li>c:{{c}}</li>" +
+                            "<li>d: <input type='text' v-model='d'></li>" +
+                            "<li>e:{{e}}</li>" +
+                            "<li>f:{{f}}</li>" +
+                            "<li>g:{{g}}</li>" +
+                        "</ul>"
+            }
+        },
+        data: function() {
+            return {
+                x: 'asdf',
+                a: 100,
+//                b: null,
+//                c: null,
+                d: 'sdfasf',
+                e: 1000,
+                f: 'aabbsdsdsd',
+                g: {
+                    aaa: 100,
+                    bbb: 'str'
+                }
+            };
+        }
+    });
+    var z = new Vue({
+        el: '#zen',
+        created: function(){
+//            console.log(this.showChildContent);
+        }
+    });
+
+
+    Vue.component('child-box', {
+        template:
+            '<div class="child-box">' +
+                '<input type="text" v-model="item"> ' +
+                '<button @click="push">push</button>' +
+            '</div>',
+
+        data: function(){
+            return {
+                item: null
+            }
+        },
+
+        methods: {
+            push: function(){
+                if(this.item.trim()){
+                    this.$dispatch('c-msg', this.item);
+                    this.item = '';
+                }
+            }
+        }
+    });
+
+    Vue.component('parent-box', {
+        template:
+        '<div class="box parent-box"><h3 class="title">event dispatch</h3>' +
+        '<input type="text" v-model="items| json"> ' +
+        '<child-box @c-msg="msgHandler"></child-box>' +
+        '</div>',
+
+        data: function(){
+            return {
+                items: []
+            }
+        },
+
+        methods: {
+            msgHandler: function(msg){
+                this.items.push(msg)
+            }
+        }
+    })
+
+    var x = new Vue( {
+        el: '#eventDispatch'
+    });
+
+    Vue.component('slot-child', {
+        template:
+                '<div class="box">' +
+                    '<h3 class="title">child</h3>' +
+                    '<slot></slot>' +
+                    '<slot name="b"></slot>' +
+                    '<slot name="a"></slot>' +
+                '</div>'
+    });
+
+    var ss = new Vue({
+        el: '#ss'
+    });
+
+//    console.log(ss.$refs.pro);
+
+//    dynamic component
+    var dynamicVm = new Vue({
+        el: '#dynamic',
+        data: {
+            currentTab: 'circle'
+        },
+        methods: {
+            changeTab: function(){
+                this.currentTab = this.currentTab === 'circle' ? 'home' : 'circle';
+            },
+            getAsyncData: function(done){
+                var self = this;
+                console.log('run...');
+                var p = new Promise(function(resolve, reject){
+                    var req = new XMLHttpRequest();
+                    var url = 'http://jsonplaceholder.typicode.com/posts/1';
+
+                    req.open('GET', url, true);
+                    req.onload = function () {
+                        if(req.status == 200) {
+                            resolve(req.responseText);
+                        }else{
+                            reject(new Error(req.statusText));
+                        }
+                    };
+
+                    req.onerror = function () {
+                        reject(new Error(req.statusText));
+                    };
+                    req.send();
+                });
+
+                p.then(function(data){
+                    console.log(Math.random());
+                    done();
+                    console.log('refs.tab');
+                    console.log(self.$refs.tab);
+                    self.$refs.tab.tabContent = data;
+                }).catch(function(err){
+                    console.log(err);
+                });
+
+            }
+        },
+        components: {
+            home: {
+                template:
+                        '<div>tab: Home</div>' +
+                        '<div>{{tabContent}}</div> ',
+                data: function(){
+                    return {
+                        tabContent: '...'
+                    }
+                },
+                activate: function(done){
+                    this.$parent.getAsyncData(done);
+                }
+            },
+            circle: {
+                template:
+                '<div>tab: Circle</div>' +
+                '<div>{{tabContent}}</div> ',
+                data: function(){
+                    return {
+                        tabContent: '...'
+                    }
+                }
+//                ,
+//                activate: function(done){
+//                    this.$parent.getAsyncData(done);
+//                }
+            }
+        }
+    })
+
+    var count = 10;
+    Vue.component('recursive', {
+            template: '<div class="box"><h3 class="title">recursive component, {{index}}</h3><recursive v-if="enable"></recursive></div>',
+            data: function () {
+                var data = { enable: count > 0, index: count };
+                count--;
+                return data;
+            }
+        }
+    )
+
+    var rec = new Vue({
+        el: '#recursive'
+    })
+</script>
+</body>
+</html>
