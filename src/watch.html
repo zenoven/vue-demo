@@ -17,11 +17,21 @@
 <script>
     Vue.config.debug = true;
 
-    new Vue({
+    var vm = new Vue({
         el: '#main',
-        template: '<div class="box"><h3 class="title">watch demo</h3><div>{{msg}}</div><div><input type="text" v-model="msg"></div></div>',
+        template:
+            '<div class="box">' +
+            '<h3 class="title">watch demo</h3>' +
+            '<div>{{msg}}<br></div>' +
+            '<div><input type="text" v-model="msg"><br></div>' +
+            '<div>a:{{a}}, b:{{b | json}}</div>' +
+            '</div>',
         data: {
-            msg: 'message comes here'
+            msg: 'message comes here',
+            a: 100,
+            b: {
+                count: 100
+            }
         },
         watch: {
             msg: function(newVal, oldVal){
@@ -31,6 +41,34 @@
         }
     });
 
+    vm.$watch('a+b.count', function(){
+        console.log('vm.$watch: expression');
+    });
+
+    var unwatch = vm.$watch(function () {
+        return this.a > 20;
+    }, function(){
+        console.log('vm.$watch: function');
+    });
+
+    vm.$nextTick(function () {
+//        should not trigger the first watcher
+        vm.a = 10;
+        vm.b.count = 190;
+    });
+
+    setTimeout(function(){
+        vm.a= 15;
+        vm.b.count = 200;
+//        should not trigger the second watcher
+        unwatch();
+    },2000);
+
+    setTimeout(function(){
+        vm.a= 200;
+        vm.b.count = 15;
+//        all watchers should not be triggered
+    },4000);
 
 </script>
 </body>
