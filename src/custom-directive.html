@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>demo2</title>
+    <title>custom-directive</title>
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
@@ -11,6 +11,7 @@
     <aaa v-ref:demo></aaa>
     <div class="box">sdfasdf</div>
     <div v-custom-directive="a=100*a-a"></div>
+    <div class="box" v-pre>{{content here should not be compiled}}</div>
 </div>
 <zen-element-directive><div class="box">element directive</div></zen-element-directive>
 

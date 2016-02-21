@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>extend-and-component</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<div id="main">
+
+</div>
+
+<script src="js/vue.js"></script>
+<script>
+    Vue.config.debug = true;
+
+    var Component = Vue.extend({
+        template: '<div class="box"><h3 class="title">extend test</h3>{{msg}}</div>',
+        data: function () {
+            return {
+                msg: 'init msg from component'
+            }
+        }
+    });
+
+    var c = new Component({
+        el: '#main',
+//        or c.$mount('#main')
+        data: {
+            msg: 'real data'
+        }
+    });
+
+//    c.$mount('#main')
+
+    setTimeout(function () {
+        c.$nextTick(function () {
+            this.msg = 'changed data';
+        })
+    },2000)
+
+</script>
+</body>
+</html>
