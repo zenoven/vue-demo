@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo2</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<div id="main">
+    <div class="box">
+        <h3 class="title">mixin basic</h3>
+        <basic></basic>
+    </div>
+</div>
+
+<div id="other">
+    <div class="box">
+        <h3 class="title">global mixin</h3>
+    </div>
+</div>
+
+
+<script src="js/vue.js"></script>
+<script>
+    Vue.config.debug = true;
+
+    var mixinBasic = {
+        template: '<h3 class="title">mixin title</h3><button class="demo" @click="go">click to trigger method</button>',
+        data: function () {
+            return {a: 10, b: [1,2, {str: 'mixin'}]}
+        },
+        created: function () {
+            console.log('mixin begin --')
+            console.log(this.$data.a);
+            console.log(this.$data.b);
+            console.log(this.$data.c);
+            console.log('mixin end --')
+        },
+        methods: {
+            go: function(){
+
+                console.log('mixin methods begin--');
+                console.log(100);
+                console.log('mixin methods end--');
+            }
+        }
+    };
+
+
+    Vue.component('basic', {
+        template: '<h3 class="title">component title</h3><button class="demo" @click="go">click to trigger method</button>',
+        data: function () {
+            return {a: 20, b: [1,2], c: 'str'}
+        },
+        mixins: [mixinBasic],
+        created: function(){
+            console.log('component begin --')
+            console.log(this.$data.a);
+            console.log(this.$data.b);
+            console.log(this.$data.c);
+            console.log('component end --')
+        },
+        methods: {
+            go: function () {
+                console.log('component methods begin--');
+                console.log(200);
+                console.log('component methods end--');
+
+            }
+        }
+    });
+
+    var mixinGlobal = {
+        created: function(){
+            console.log('global mixin ');
+        }
+    };
+    Vue.mixin(mixinGlobal);
+
+    var vm = new Vue({
+        el: '#main',
+        data: {
+            val: 100,
+            msg: 100.33
+        }
+    });
+
+    var vm = new Vue({
+        el: '#other',
+        data: {
+            val: 100,
+            msg: 100.33
+        }
+    });
+
+
+</script>
+</body>
+</html>
