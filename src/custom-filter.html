@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo2</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<div id="main">
+    <div class="box">
+        <h3 class="title">custom filter</h3>
+        {{val | divide 20 30 40}}
+        <br>
+        <br>
+        <br>
+        <input type="text" v-model="msg | currency">
+        {{msg}}
+    </div>
+</div>
+
+
+<script src="js/vue.js"></script>
+<script>
+    Vue.config.debug = true;
+
+    Vue.filter('divide', function (val, a,b,c) {
+        return val/(a*b*c);
+    });
+    // 等同下面代码
+//    Vue.filter('divide', {
+//        read: function (val, a,b,c) {
+//            return val / (a * b * c);
+//        }
+//    });
+
+    Vue.filter('currency',{
+        // 从model中读取
+       read: function(val){
+           console.log('aaa');
+           var newVal = '$' + val.toFixed(2);
+           console.log(newVal);
+           return newVal;
+       },
+//      // 写入model
+        write: function (val, oldVal) {
+            var number = +val.replace(/[^\d.]/g, '');
+            return isNaN(number) ? 0 : parseFloat(number.toFixed(2));
+        }
+    });
+
+    var vm = new Vue({
+        el: '#main',
+        data: {
+            val: 100,
+            msg: 100.33
+        }
+    });
+
+
+
+
+</script>
+</body>
+</html>

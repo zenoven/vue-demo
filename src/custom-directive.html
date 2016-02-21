@@ -8,8 +8,9 @@
 <body>
 
 <div id="main">
-    <aaa></aaa>
+    <aaa v-ref:demo></aaa>
     <div class="box">sdfasdf</div>
+    <div v-custom-directive="a=100*a-a"></div>
 </div>
 <zen-element-directive><div class="box">element directive</div></zen-element-directive>
 
@@ -19,6 +20,7 @@
     Vue.config.debug = true;
 
     Vue.directive('alert', {
+        params: ['x'],
         bind: function(){
             console.log('initial bind triggered!');
         },
@@ -27,6 +29,7 @@
             console.log(this);
             var str =
                     'name: ' + this.name + '\r\n' +
+                    'params: ' + JSON.stringify(this.params) + '\r\n' +
                     'arg: ' + this.arg + '\r\n' +
                     'expression: ' + this.expression + '\r\n' +
                     'modifiers: ' + JSON.stringify(this.modifiers) + '\r\n' +
@@ -37,21 +40,43 @@
         },
         unbind: function(){
             console.log('unbind triggered!');
-        }
-    });
-
-    Vue.component('aaa', {
-        template: '<div class="a box" v-alert:content.transform.empty="msg"><h3 class="title">directive demo</h3></div>',
-        data: function () {
-            return {
-                msg: "I'm message"
+        },
+        paramWatchers: {
+            x: function(newVal, oldVal){
+                console.log('param x changed from old value[' + oldVal +'] to new value [' + newVal + ']')
             }
         }
     });
 
-    var vm = new Vue({
-        el: '#main'
+    Vue.component('aaa', {
+        template: '<div class="a box" v-alert:content.transform.empty="msg" :x="p"><h3 class="title">directive demo</h3></div>',
+        data: function () {
+            return {
+                msg: "I'm message",
+                p: 'abc'
+            }
+        }
     });
+
+    Vue.directive('custom-directive', {
+        acceptStatement: true,
+        update: function(fn){
+            fn();
+        }
+    });
+
+    var vm = new Vue({
+        el: '#main',
+        data: {
+            a: 100
+        }
+    });
+
+    console.log(vm.a)
+
+    setTimeout(function () {
+        vm.$refs.demo.p = 'new value here';
+    },2000)
 
     Vue.elementDirective('zen-element-directive', {
         bind: function () {
