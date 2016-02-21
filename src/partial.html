@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>partial</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<div id="main">
+    <partial name="test"></partial>
+</div>
+
+<div id="x"></div>
+
+<script src="js/vue.js"></script>
+<script>
+    Vue.config.debug = true;
+//    global partial
+    var p = Vue.partial('partial', '<div class="box"><h3 class="title">partial</h3></div>');
+    new Vue({
+        el: '#main',
+        partials: {
+            test: p
+        }
+    });
+
+//    or write like this (from https://github.com/vuejs/vue/blob/521e8d2754c2e7f172c3c9702fdb74fe993027fb/test/unit/specs/directives/element/partial_spec.js)
+    new Vue({
+        el: '#x',
+        template: '<partial name="a"></partial><partial name="b"></partial>',
+        data: {
+            X: 'XXXX',
+            Y: 'YYYY'
+        },
+        partials: {
+            a: '<div class="box">partial with name=a, {{X+X}}</div>',
+            a: '<div class="box">partial with name=a, {{X+X}}</div>',
+            b: '{{Y+Y}}'
+        }
+    });
+</script>
+</body>
+</html>
